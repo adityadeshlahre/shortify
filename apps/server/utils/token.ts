@@ -2,6 +2,7 @@ import axios from "axios";
 
 export let accessToken = "";
 export let refreshToken = "";
+export let expiresIn = 0;
 
 const redirectUri = process.env.REDIRECT_URI || "";
 const clientId = process.env.CLIENT_ID || "";
@@ -17,7 +18,13 @@ export async function refreshAccessToken() {
   );
 
   try {
-    const response = await axios.post(
+    const response = await axios.post<{
+      access_token: string;
+      token_type: 'Bearer';
+      expires_in: number;
+      refresh_token?: string;
+      scope?: string;
+    }>(
       "https://accounts.spotify.com/api/token",
       params,
       {
@@ -28,6 +35,10 @@ export async function refreshAccessToken() {
       },
     );
     accessToken = response.data.access_token;
+    if (response.data.refresh_token) {
+      refreshToken = response.data.refresh_token;
+    }
+    expiresIn = response.data.expires_in;
 
     console.log("Access token refreshed");
   } catch (error) {

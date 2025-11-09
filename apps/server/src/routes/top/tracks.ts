@@ -1,5 +1,5 @@
 import { validAccessToken } from "@/middleware";
-import type { TopTracksOfUserResponse } from "@shortify/types/top/tracks";
+import type { Artist, Item, TopTracksOfUserResponse } from "@shortify/types/top/tracks";
 import { Hono } from "hono";
 import axiosinstance from "utils/axios";
 import factory from "utils/factory";
@@ -16,10 +16,10 @@ export const topTracksOfuser = factory.createHandlers(async (c) => {
       },
     );
 
-    const tracks = response.data.items.map((track: any) => ({
+    const tracks = response.data.items.map((track: Item) => ({
       name: track.name,
       uri: track.uri,
-      artists: track.artists.map((artist: any) => artist.name).join(", "),
+      artists: track.artists.map((artist: Artist) => artist.name).join(", "),
     }));
 
     return c.json(
