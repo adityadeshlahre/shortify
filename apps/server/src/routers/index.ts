@@ -1,14 +1,14 @@
-import { showArtistsList } from "@/routes/artist/list";
-import { showCurrentSong } from "@/routes/current/get";
-import { stopCurrentSong } from "@/routes/current/stop";
-import { topTracksOfuser } from "@/routes/top/tracks";
+import { showArtistsListRoute } from "@/routes/artist/list";
+import { showCurrentSongRoute } from "@/routes/current/get";
+import { stopCurrentSongRoute } from "@/routes/current/stop";
+import { topTracksOfuserRoute } from "@/routes/top/tracks";
 import { Hono } from "hono";
 
 const api = new Hono()
-	.route("/artist", showArtistsList)
-	.route("/current/stop", stopCurrentSong)
-	.route("/top/tracks", topTracksOfuser) //top10songs
-	.route("/current", showCurrentSong);
+	.route("/artist", showArtistsListRoute)
+	.route("/current/stop", stopCurrentSongRoute)
+	.route("/top/tracks", topTracksOfuserRoute)
+	.route("/current", showCurrentSongRoute);
 
 export const appRouter = api;
 
