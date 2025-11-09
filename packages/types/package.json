@@ -2,6 +2,9 @@
   "name": "@shortify/types",
   "module": "index.ts",
   "type": "module",
+  "exports": {
+    "./*": "./*.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

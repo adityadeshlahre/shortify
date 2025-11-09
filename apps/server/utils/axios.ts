@@ -7,8 +7,6 @@ const axiosinstance = axios.create({
 
 axiosinstance.interceptors.request.use(
 	(config) => {
-		const token = process.env.SPOTIFY_API_TOKEN || "";
-		config.headers.set("Authorization", `Bearer ${token}`);
 		return config;
 	},
 	(error) => {
