@@ -6,7 +6,6 @@ import { accessToken, ensureValidToken } from "../../../utils/token";
 
 const showArtistsList = factory.createHandlers(async (c: Context) => {
   try {
-    // Ensure we have a valid token
     const isValid = await ensureValidToken();
     if (!isValid || !accessToken) {
       return c.json({
@@ -34,7 +33,6 @@ const showArtistsList = factory.createHandlers(async (c: Context) => {
   } catch (error: any) {
     console.log("Error fetching followed artists:", error);
     
-    // Handle specific Spotify API errors
     if (error.response?.status === 401) {
       return c.json({
         error: "Invalid or expired access token. Please re-authorize.",

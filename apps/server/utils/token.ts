@@ -30,7 +30,6 @@ export function getAuthUrl() {
   return `https://accounts.spotify.com/authorize?${params.toString()}`;
 }
 
-// Exchange authorization code for access token
 export async function exchangeCodeForToken(code: string) {
   const params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
@@ -73,7 +72,6 @@ export async function exchangeCodeForToken(code: string) {
   }
 }
 
-// Refresh user access token using refresh token
 export async function refreshAccessToken() {
   if (!refreshToken) {
     console.warn("No refresh token available. User needs to re-authorize.");
@@ -122,9 +120,8 @@ export async function refreshAccessToken() {
   }
 }
 
-// Check if token is valid and refresh if needed
 export async function ensureValidToken() {
-  if (Date.now() >= expiresIn - 60000) { // Refresh 1 minute before expiry
+  if (Date.now() >= expiresIn - 60000) {
     return await refreshAccessToken();
   }
   return !!accessToken;

@@ -6,7 +6,6 @@ import { accessToken, ensureValidToken } from "../../../utils/token";
 
 export const topTracksOfuser = factory.createHandlers(async (c) => {
   try {
-    // Ensure we have a valid token
     const isValid = await ensureValidToken();
     if (!isValid || !accessToken) {
       return c.json({
@@ -44,7 +43,6 @@ export const topTracksOfuser = factory.createHandlers(async (c) => {
   } catch (error: any) {
     console.log("Error fetching top tracks:", error);
     
-    // Handle specific Spotify API errors
     if (error.response?.status === 401) {
       return c.json({
         error: "Invalid or expired access token. Please re-authorize.",

@@ -24,7 +24,7 @@ const callbackHandler = factory.createHandlers(async (c: Context) => {
     return c.json({
       message: "Authorization successful! You can now use the API endpoints.",
       tokenData: {
-        access_token: tokenData.access_token.substring(0, 20) + "...", // Only show partial token for security
+        access_token: tokenData.access_token.substring(0, 20) + "...",
         expires_in: tokenData.expires_in,
         scope: tokenData.scope
       }

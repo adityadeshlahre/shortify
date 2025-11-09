@@ -9,11 +9,9 @@ import { requireValidToken } from "../middleware/auth";
 import { Hono } from "hono";
 
 const api = new Hono()
-	// Auth routes (no middleware needed)
 	.route("/auth/login", loginRoute)
 	.route("/auth/callback", callbackRoute)
 	.route("/auth/status", statusRoute)
-	// Protected routes (require valid token)
 	.use("/artist/*", requireValidToken)
 	.use("/current/*", requireValidToken)
 	.use("/top/*", requireValidToken)
