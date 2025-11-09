@@ -25,10 +25,13 @@ app
       endpoints: {
         login: "/api/auth/login - Get authorization URL",
         callback: "/api/auth/callback - OAuth callback (handled by Spotify)",
+        status: "/api/auth/status - Check authentication status",
         artists: "/api/artist - Get followed artists",
         current: "/api/current - Get currently playing song", 
         stop: "/api/current/stop - Stop current song",
-        topTracks: "/api/top/tracks - Get user's top tracks"
+        play: "/api/current/play - Resume/Play current song",
+        topTracks: "/api/top/tracks - Get user's top tracks",
+        devices: "/api/devices - Get available Spotify devices"
       },
       note: "Most endpoints require user authorization. Start with /api/auth/login"
     });

@@ -3,7 +3,7 @@ import axiosinstance from "../../../utils/axios";
 import factory from "../../../utils/factory";
 import { accessToken, ensureValidToken } from "../../../utils/token";
 
-const stopCurrentSong = factory.createHandlers(async (c: Context) => {
+const resumeCurrentSong = factory.createHandlers(async (c: Context) => {
   try {
     const isValid = await ensureValidToken();
     if (!isValid || !accessToken) {
@@ -31,8 +31,8 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
 
     if (!activeDevice) {
       return c.json({
-        error: "No active device found. Please start playing music on one of your devices first.",
-        suggestion: "Play any song on Spotify, then try stopping it",
+        error: "No active device found. Please start Spotify on one of your devices first.",
+        suggestion: "Open Spotify and play any song, then you can use this endpoint to resume",
         availableDevices: devices.map((d: any) => ({
           id: d.id,
           name: d.name,
@@ -43,8 +43,8 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
       }, 403);
     }
 
-    // Now try to pause the playback
-    await axiosinstance.put("/me/player/pause", {}, {
+    // Now try to resume/play the playback
+    await axiosinstance.put("/me/player/play", {}, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -52,7 +52,7 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
 
     return c.json(
       {
-        message: "Song stopped successfully",
+        message: "Playback resumed successfully",
         device: {
           name: activeDevice.name,
           type: activeDevice.type
@@ -61,7 +61,7 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
       200,
     );
   } catch (error: any) {
-    console.log("Error stopping current song:", error);
+    console.log("Error resuming current song:", error);
 
     if (error.response?.status === 401) {
       return c.json({
@@ -74,11 +74,11 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
       return c.json({
         error: "Player command failed. This usually means:",
         reasons: [
-          "No device is currently active/playing music",
-          "Spotify is not currently playing anything",
-          "The device doesn't support remote control"
+          "No device is currently active",
+          "The device doesn't support remote control",
+          "Spotify Premium is required for playback control"
         ],
-        suggestion: "Start playing music on Spotify first, then try again",
+        suggestion: "Make sure you have an active Spotify device and Premium subscription",
         devicesEndpoint: "/api/devices"
       }, 403);
     }
@@ -86,16 +86,16 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
     if (error.response?.status === 404) {
       return c.json({
         error: "No active device found. Please start Spotify on a device.",
-        suggestion: "Open Spotify and start playing music, then try again",
+        suggestion: "Open Spotify and play music, then try again",
         devicesEndpoint: "/api/devices"
       }, 404);
     }
 
     return c.json(
       {
-        error: "Failed to stop the current song",
+        error: "Failed to resume playback",
         details: error.response?.data || error.message,
-        suggestion: "Check if Spotify is active and playing music",
+        suggestion: "Check if Spotify is active on a device and you have Premium subscription",
         devicesEndpoint: "/api/devices"
       },
       500,
@@ -103,6 +103,6 @@ const stopCurrentSong = factory.createHandlers(async (c: Context) => {
   }
 });
 
-export const stopCurrentSongRoute = new Hono()
-  .get("/", ...stopCurrentSong)
-  .post("/", ...stopCurrentSong);
+export const resumeCurrentSongRoute = new Hono()
+  .get("/", ...resumeCurrentSong)
+  .post("/", ...resumeCurrentSong);
