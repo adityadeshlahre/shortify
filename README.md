@@ -1,11 +1,59 @@
-### Task
+# Shortify
 
-Create an endpoint on top of Spotify API to show your top 10 tracks as well as show the now playing song. Add it to your portfolio website at a new route /spotify.
+A Spotify API wrapper built with Hono, providing simplified endpoints for common Spotify operations.
 
-#### Requirements
+## Base URL
 
-[ ] Show a list of the artists you follow.
-[ ] Provide an option to stop the currently playing song.
-[ ] Provide an option to start playing any of the top 10 songs.
-[ ] You can just return a JSON that can be pretty-printed in the browser. UI is NOT needed.
-[ ] Deploy the API in your portfolio website itself. Do NOT show the demo on localhost.
+```
+https://shortify-6z8q.onrender.com/api
+```
+
+## API Endpoints
+
+### Get Followed Artists
+
+**Endpoint:** `GET /api/artist/`
+
+Returns a list of artists the user is following.
+
+**Curl Example:**
+
+```bash
+curl -X GET "https://shortify-6z8q.onrender.com/api/artist"
+```
+
+### Get Currently Playing Song
+
+**Endpoint:** `GET /api/current/`
+
+Returns information about the currently playing track.
+
+**Curl Example:**
+
+```bash
+curl -X GET "https://shortify-6z8q.onrender.com/api/current"
+```
+
+### Stop Current Song
+
+**Endpoint:** `POST /api/current/stop`
+
+Pauses the currently playing track.
+
+**Curl Example:**
+
+```bash
+curl -X POST "https://shortify-6z8q.onrender.com/api/current/stop"
+```
+
+### Get Top Tracks
+
+**Endpoint:** `GET /api/top/tracks`
+
+Returns the user's top 10 tracks.
+
+**Curl Example:**
+
+```bash
+curl -X GET "https://shortify-6z8q.onrender.com/api/top/tracks"
+```
