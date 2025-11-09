@@ -1,6 +1,7 @@
 import type { Context } from "hono";
 import axiosinstance from "utils/axios";
 import factory from "utils/factory";
+import { refreshAccessToken } from "utils/token";
 
 export const validAccessToken = factory.createMiddleware(async (c: Context, next) => {
 	try {
@@ -15,6 +16,16 @@ export const validAccessToken = factory.createMiddleware(async (c: Context, next
 
 		await next();
 	} catch (err) {
-		return c.json({ error: "Invalid or expired token" }, 401);
+		if (
+			err && typeof err === 'object' && 'response' in err &&
+			err.response && typeof err.response === 'object' && 'status' in err.response &&
+			err.response.status === 401
+		) {
+			console.log("Invalid token");
+			await refreshAccessToken();
+			next();
+		} else {
+			return c.json({ error: `Internal server error ${err}` }, 500);
+		}
 	}
 });

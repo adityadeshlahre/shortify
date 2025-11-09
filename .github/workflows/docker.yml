@@ -42,8 +42,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Render Deployment
-        uses: jakejarvis/render-deploy-action@v1
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
           service-id: ${{ secrets.SERVICE_ID_SERVER }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-          wait-for-deployment: true
+          wait-for-success: true
