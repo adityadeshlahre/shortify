@@ -13,22 +13,33 @@ app
   .use(
     "/*",
     cors({
-      origin: process.env.CORS_ORIGIN || "",
+      origin: process.env.CORS_ORIGIN || "*",
       allowMethods: ["GET", "POST", "PATCH", "OPTIONS", "PUT", "DELETE"],
       allowHeaders: ["Content-Type", "Authorization"],
       exposeHeaders: ["Content-Length"],
     }),
   )
   .get("/", (c) => {
-    return c.text("OK");
+    return c.json({
+      message: "Shortify API is running!",
+      endpoints: {
+        login: "/api/auth/login - Get authorization URL",
+        callback: "/api/auth/callback - OAuth callback (handled by Spotify)",
+        artists: "/api/artist - Get followed artists",
+        current: "/api/current - Get currently playing song", 
+        stop: "/api/current/stop - Stop current song",
+        topTracks: "/api/top/tracks - Get user's top tracks"
+      },
+      note: "Most endpoints require user authorization. Start with /api/auth/login"
+    });
   })
   .route("/api", appRouter);
 
 export default app;
 
-refreshAccessToken().catch(console.error);
-
-cron.schedule("0 */1 * * *", () => {
-  console.log("Refreshing access token...");
+cron.schedule("*/30 * * * *", () => {
+  console.log("Attempting to refresh access token...");
   refreshAccessToken().catch(console.error);
 });
+
+console.log("🎵 Shortify server started!");
