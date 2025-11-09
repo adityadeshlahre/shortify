@@ -1,4 +1,3 @@
-import { validAccessToken } from "@/middleware";
 import type { ArtistsResponse } from "@shortify/types/artist/list";
 import { Hono, type Context } from "hono";
 import axiosinstance from "utils/axios";
@@ -23,6 +22,7 @@ const showArtistsList = factory.createHandlers(async (c: Context) => {
       200,
     );
   } catch (error) {
+    console.log("Error fetching followed artists:", error);
     return c.json(
       {
         error: "Failed to fetch followed artists",
@@ -32,4 +32,4 @@ const showArtistsList = factory.createHandlers(async (c: Context) => {
   }
 });
 
-export const showArtistsListRoute = new Hono().get("/", validAccessToken, ...showArtistsList);
+export const showArtistsListRoute = new Hono().get("/", ...showArtistsList);

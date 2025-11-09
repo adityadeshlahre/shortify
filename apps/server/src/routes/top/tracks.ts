@@ -29,6 +29,7 @@ export const topTracksOfuser = factory.createHandlers(async (c) => {
       200,
     );
   } catch (error) {
+    console.log("Error fetching top tracks:", error);
     return c.json(
       {
         error: "Failed to fetch top tracks",
@@ -38,4 +39,4 @@ export const topTracksOfuser = factory.createHandlers(async (c) => {
   }
 });
 
-export const topTracksOfuserRoute = new Hono().get("/", validAccessToken, ...topTracksOfuser);
+export const topTracksOfuserRoute = new Hono().get("/", ...topTracksOfuser);

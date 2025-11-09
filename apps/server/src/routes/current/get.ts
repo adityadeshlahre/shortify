@@ -1,8 +1,8 @@
-import { validAccessToken } from "@/middleware";
 import type { CurrentlyPlayingResponse } from "@shortify/types/current/current";
 import { Hono, type Context } from "hono";
 import axiosinstance from "utils/axios";
 import factory from "utils/factory";
+import { accessToken } from "utils/token";
 
 const showCurrentSong = factory.createHandlers(async (c: Context) => {
   try {
@@ -11,7 +11,7 @@ const showCurrentSong = factory.createHandlers(async (c: Context) => {
         "/me/player/currently-playing",
         {
           headers: {
-            Authorization: `Bearer ${c.get("accessToken")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         },
       );
@@ -23,6 +23,7 @@ const showCurrentSong = factory.createHandlers(async (c: Context) => {
       200,
     );
   } catch (error) {
+    console.log("Error fetching current song:", error);
     return c.json(
       {
         error: "Failed to fetch the current song",
@@ -32,4 +33,4 @@ const showCurrentSong = factory.createHandlers(async (c: Context) => {
   }
 });
 
-export const showCurrentSongRoute = new Hono().get("/", validAccessToken, ...showCurrentSong);
+export const showCurrentSongRoute = new Hono().get("/", ...showCurrentSong);
