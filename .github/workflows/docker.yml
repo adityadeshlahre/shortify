@@ -35,3 +35,15 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/shortify-server:latest
+
+  render_deploy:
+    name: Deploy to Render
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deployment
+        uses: jakejarvis/render-deploy-action@v1
+        with:
+          service-id: ${{ secrets.SERVICE_ID_SERVER }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
+          wait-for-deployment: true
